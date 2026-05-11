@@ -1,0 +1,440 @@
+﻿<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Preview Remis Mariela</title>
+    <style>
+      :root {
+        --display-font: "Cooper Black", "Segoe UI Rounded", "Arial Rounded MT Bold", system-ui, sans-serif;
+        --paper: #fff6f8;
+        --paper-2: #fbe7ed;
+        --ink: #392631;
+        --muted: rgba(57, 38, 49, 0.58);
+        --rose: #cf6f8a;
+        --rose-dark: #8d3f5b;
+        --plum: #5a2f43;
+        --blush: #fde6ee;
+        --milk: rgba(255, 255, 255, 0.86);
+        --champagne: #fff1dc;
+        --gold: #d7a85a;
+        --green: #687b68;
+        --line: rgba(207, 111, 138, 0.2);
+        --shadow: 0 18px 44px rgba(141, 63, 91, 0.13);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        min-height: 100vh;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 18% 0%, rgba(255, 225, 234, 0.9), transparent 34%),
+          linear-gradient(180deg, #fff9fa 0%, var(--paper) 58%, #fffaf6 100%);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      button, input, textarea { font: inherit; }
+      button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+
+      .phone {
+        width: min(100%, 440px);
+        min-height: 100vh;
+        margin: 0 auto;
+        padding: 14px 14px 28px;
+      }
+
+      .app-frame {
+        min-height: calc(100vh - 28px);
+        border: 2px solid rgba(207, 111, 138, 0.55);
+        border-radius: 28px;
+        background: rgba(255, 255, 255, 0.5);
+        box-shadow: 0 26px 70px rgba(141, 63, 91, 0.15);
+        overflow: hidden;
+      }
+
+      .inner { padding: 18px 14px 28px; }
+      .screen { display: none; animation: fadeIn 160ms ease; }
+      .screen.active { display: block; }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(4px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .top-shell {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        padding: 14px 14px 12px;
+        background: rgba(255, 246, 248, 0.92);
+        backdrop-filter: blur(18px);
+        border-bottom: 1px solid rgba(207, 111, 138, 0.12);
+      }
+
+      .brand-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .avatar {
+        display: grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #ffd8e2, #fff5f7);
+        border: 1px solid rgba(207, 111, 138, 0.28);
+        color: var(--rose-dark);
+        font-weight: 900;
+      }
+
+      .brand-title { margin: 0; color: var(--plum); font-family: var(--display-font); font-size: 20px; line-height: 1; font-weight: 900; }
+      .brand-subtitle { margin: 1px 0 0; font-size: 12px; color: rgba(57, 38, 49, 0.46); }
+
+      .soft-nav {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 5px;
+        margin-top: 13px;
+        padding: 5px;
+        border: 1px solid rgba(207, 111, 138, 0.16);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.7);
+      }
+
+      .nav-btn {
+        min-height: 34px;
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        color: rgba(57, 38, 49, 0.56);
+        font-size: 12px;
+        font-weight: 850;
+      }
+
+      .nav-btn.active {
+        background: var(--plum);
+        color: white;
+        box-shadow: 0 10px 24px rgba(90, 47, 67, 0.18);
+      }
+
+      header.hero { padding: 22px 2px 0; }
+      .eyebrow { margin: 0; color: var(--rose-dark); font-size: 13px; font-weight: 800; }
+      h1 { margin: 5px 0 0; color: var(--plum); font-family: var(--display-font); font-size: 38px; line-height: 1; letter-spacing: 0; font-weight: 900; }
+      h2 { margin: 0; color: var(--plum); font-size: 19px; letter-spacing: 0; }
+      p { letter-spacing: 0; }
+
+      .daily-note {
+        margin-top: 16px;
+        border: 1px solid rgba(207, 111, 138, 0.18);
+        border-radius: 8px;
+        background: linear-gradient(135deg, rgba(253, 230, 238, 0.95), rgba(255, 247, 250, 0.86));
+        padding: 14px;
+        color: var(--plum);
+        box-shadow: var(--shadow);
+      }
+
+      .daily-note p { margin: 0; }
+      .daily-note .main { font-family: var(--display-font); font-size: 21px; line-height: 1; font-weight: 900; }
+      .daily-note .sub { margin-top: 4px; color: var(--muted); font-size: 13px; line-height: 1.45; }
+
+      .grid { display: grid; gap: 10px; }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 18px; }
+
+      .card, .row, .soft-panel {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--milk);
+        box-shadow: var(--shadow);
+      }
+
+      .card { padding: 15px; }
+      .stat-label { margin: 0; color: var(--muted); font-size: 13px; font-weight: 700; }
+      .stat-value { margin: 8px 0 0; color: var(--ink); font-size: 25px; line-height: 1.05; font-weight: 900; }
+      .rose { color: var(--rose); }
+      .gold { color: var(--gold); }
+      .green { color: var(--green); }
+
+      .actions { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 15px; }
+      .btn {
+        min-height: 58px;
+        border: 0;
+        border-radius: 8px;
+        padding: 0 16px;
+        font-size: 16px;
+        font-weight: 850;
+        transition: transform 130ms ease, box-shadow 130ms ease;
+      }
+      .btn:active { transform: scale(0.99); }
+      .btn-primary { background: linear-gradient(135deg, var(--plum), var(--rose)); color: white; box-shadow: 0 18px 38px rgba(207, 111, 138, 0.25); }
+      .btn-secondary { border: 1px solid rgba(207, 111, 138, 0.2); background: var(--blush); color: var(--plum); }
+
+      section { margin-top: 24px; }
+      .section-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 11px; }
+      .section-caption { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+      .text-link { width: auto; border: 0; background: transparent; color: var(--rose-dark); font-size: 13px; font-weight: 850; }
+
+      .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        min-height: 62px;
+        padding: 14px;
+        text-align: left;
+      }
+      .row-main { min-width: 0; flex: 1; }
+      .row-title { margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 900; }
+      .row-sub { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+      .row-price { margin: 0; flex: 0 0 auto; font-weight: 900; }
+
+      .end-day {
+        background: linear-gradient(135deg, var(--plum), var(--rose));
+        color: white;
+        padding: 17px;
+      }
+      .end-day h2 { color: white; font-family: var(--display-font); font-size: 25px; line-height: 1; }
+      .end-day p { margin: 7px 0 0; color: rgba(255,255,255,0.78); font-size: 13px; line-height: 1.45; }
+
+      .topbar { padding-top: 18px; }
+      .back { width: auto; border: 0; background: transparent; color: var(--plum); font-size: 14px; font-weight: 850; }
+      label, .field-group { display: block; margin-top: 18px; }
+      .label { display: block; margin-bottom: 8px; color: rgba(57, 38, 49, 0.72); font-size: 13px; font-weight: 850; }
+      input, textarea {
+        width: 100%;
+        border: 1px solid rgba(207, 111, 138, 0.2);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.92);
+        color: var(--ink);
+        outline: none;
+        box-shadow: 0 10px 22px rgba(141, 63, 91, 0.06);
+      }
+      input { height: 58px; padding: 0 15px; font-size: 18px; font-weight: 800; }
+      input.money { height: 66px; font-size: 32px; font-weight: 950; }
+      textarea { min-height: 92px; padding: 14px; resize: vertical; }
+      .money-preview { margin: 8px 0 0; color: var(--rose); font-size: 14px; font-weight: 900; }
+      .choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+      .choice { min-height: 54px; border: 1px solid rgba(207, 111, 138, 0.18); border-radius: 8px; background: white; color: var(--plum); font-size: 14px; font-weight: 850; }
+      .choice.active { border-color: var(--plum); background: var(--plum); color: white; }
+      .savebar { width: 100%; margin-top: 18px; }
+
+      .toast {
+        display: none;
+        position: fixed;
+        left: 50%;
+        bottom: 22px;
+        z-index: 10;
+        transform: translateX(-50%);
+        width: min(360px, calc(100% - 36px));
+        border: 1px solid rgba(207, 111, 138, 0.22);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.96);
+        color: var(--plum);
+        padding: 13px 16px;
+        text-align: center;
+        font-weight: 900;
+        box-shadow: 0 18px 44px rgba(141, 63, 91, 0.18);
+      }
+      .toast.show { display: block; animation: toastIn 190ms ease; }
+      @keyframes toastIn { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+      .calendar-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+      .month-btn { width: 42px; min-height: 42px; border: 0; border-radius: 8px; background: var(--blush); color: var(--plum); font-weight: 900; }
+      .weekdays, .calendar-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+      .weekdays { color: rgba(57, 38, 49, 0.48); font-size: 12px; font-weight: 850; text-align: center; }
+      .day { aspect-ratio: 1; border: 1px solid rgba(207, 111, 138, 0.16); border-radius: 8px; background: white; color: var(--ink); font-size: 14px; font-weight: 900; }
+      .day.active { background: var(--plum); color: white; }
+      .day.has-work::after { content: ""; display: block; width: 6px; height: 6px; margin: 4px auto 0; border-radius: 999px; background: var(--rose); }
+      .day.active.has-work::after { background: white; }
+      .mini-summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .movement-icon { display: grid; place-items: center; flex: 0 0 auto; width: 40px; height: 40px; border-radius: 8px; background: var(--blush); color: var(--rose); font-weight: 950; }
+      .movement-icon.expense { background: var(--champagne); color: var(--gold); }
+
+      @media (min-width: 760px) {
+        body { padding: 22px 0; }
+        .phone { width: min(100%, 470px); }
+        .app-frame { min-height: calc(100vh - 44px); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="phone">
+      <div class="app-frame">
+        <div class="top-shell" data-main-nav>
+          <div class="brand-row">
+            <div style="display:flex; align-items:center; gap:10px; min-width:0;">
+              <div class="avatar">M</div>
+              <div>
+                <p class="brand-title">Remis de Mariela</p>
+                <p class="brand-subtitle">Todo organizado, sin apuro</p>
+              </div>
+            </div>
+          </div>
+          <nav class="soft-nav">
+            <button class="nav-btn active" data-screen="home">Inicio</button>
+            <button class="nav-btn" data-screen="calendar">Calendario</button>
+            <button class="nav-btn" data-screen="history">Historial</button>
+            <button class="nav-btn" data-screen="stats">Stats</button>
+          </nav>
+        </div>
+
+        <div class="inner">
+          <main id="home" class="screen active">
+            <header class="hero">
+              <p class="eyebrow">Que tengas un lindo dia</p>
+              <h1>Hola, Mariela &hearts;</h1>
+            </header>
+
+            <div class="daily-note">
+              <p class="main">Todo listo para empezar</p>
+              <p class="sub">Tus viajes, gastos y cuentas del dia quedan ordenados en un solo lugar.</p>
+            </div>
+
+            <div class="grid stats">
+              <article class="card"><p class="stat-label">Viajes</p><p class="stat-value green">8</p></article>
+              <article class="card"><p class="stat-label">Ganancias</p><p class="stat-value rose">$42.500</p></article>
+              <article class="card"><p class="stat-label">Gastos</p><p class="stat-value gold">$9.800</p></article>
+              <article class="card"><p class="stat-label">Neto</p><p class="stat-value">$32.700</p></article>
+            </div>
+
+            <div class="grid actions">
+              <button class="btn btn-primary" data-screen="trip">+ Nuevo viaje</button>
+              <button class="btn btn-secondary" data-screen="expense">Nuevo gasto</button>
+            </div>
+
+            <section class="soft-panel end-day">
+              <h2>Gran trabajo hoy &hearts;</h2>
+              <p>Cuando termines, aca vas a ver un cierre simple del dia: cuanto hiciste, cuanto gastaste y que quedo limpio.</p>
+            </section>
+
+            <section>
+              <div class="section-head">
+                <div>
+                  <h2>Destinos frecuentes</h2>
+                  <p class="section-caption">Para repetir recorridos sin escribir de nuevo.</p>
+                </div>
+              </div>
+              <div class="grid">
+                <button class="row" data-screen="trip"><span class="row-title">Centro</span><span class="row-price">$5.200</span></button>
+                <button class="row" data-screen="trip"><span class="row-title">Hospital</span><span class="row-price">$4.800</span></button>
+              </div>
+            </section>
+
+            <section>
+              <div class="section-head">
+                <h2>Ultimos viajes</h2>
+                <button class="text-link" data-screen="history">Ver historial</button>
+              </div>
+              <div class="grid">
+                <article class="row"><div class="row-main"><p class="row-title">Terminal</p><p class="row-sub">14:20 &middot; Transferencia</p></div><p class="row-price">$6.400</p></article>
+                <article class="row"><div class="row-main"><p class="row-title">Barrio Norte</p><p class="row-sub">13:05 &middot; Efectivo</p></div><p class="row-price">$3.900</p></article>
+              </div>
+            </section>
+          </main>
+
+          <main id="trip" class="screen">
+            <header class="topbar">
+              <button class="back" data-screen="home">&larr; Volver</button>
+              <h1>Nuevo viaje</h1>
+              <p class="section-caption">Rapido y simple. La hora se guarda sola.</p>
+            </header>
+            <label><span class="label">Destino</span><input value="Centro" /></label>
+            <label><span class="label">Monto</span><input class="money" inputmode="decimal" value="5200" /><p class="money-preview">$5.200</p></label>
+            <div class="field-group"><span class="label">Metodo de pago</span><div class="choice-grid"><button class="choice active">Efectivo</button><button class="choice">Transferencia</button></div></div>
+            <label><span class="label">Notas opcionales</span><textarea placeholder="Espera, equipaje, referencia..."></textarea></label>
+            <button class="btn btn-primary savebar" data-save="Viaje guardado ✨" data-screen="home">Guardar viaje</button>
+          </main>
+
+          <main id="expense" class="screen">
+            <header class="topbar">
+              <button class="back" data-screen="home">&larr; Volver</button>
+              <h1>Nuevo gasto</h1>
+              <p class="section-caption">Para que las cuentas queden claras.</p>
+            </header>
+            <div class="field-group"><span class="label">Categoria</span><div class="choice-grid"><button class="choice active">Combustible</button><button class="choice">Taller</button><button class="choice">Lavado</button><button class="choice">Seguro</button><button class="choice">Otros</button></div></div>
+            <label><span class="label">Monto</span><input class="money" inputmode="decimal" placeholder="$0" /><p class="money-preview">$0</p></label>
+            <label><span class="label">Notas opcionales</span><textarea placeholder="Detalle del gasto..."></textarea></label>
+            <button class="btn btn-primary savebar" data-save="Gasto guardado. Todo organizado" data-screen="home">Guardar gasto</button>
+          </main>
+
+          <main id="calendar" class="screen">
+            <header class="hero"><p class="eyebrow">Calendario</p><h1>Viajes por mes</h1></header>
+            <section class="card">
+              <div class="calendar-head"><button class="month-btn">&larr;</button><h2>Mayo 2026</h2><button class="month-btn">&rarr;</button></div>
+              <div class="weekdays"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
+              <div class="calendar-grid" style="margin-top:8px;">
+                <span></span><span></span><span></span><span></span>
+                <button class="day">1</button><button class="day has-work">2</button><button class="day">3</button>
+                <button class="day has-work">4</button><button class="day has-work">5</button><button class="day">6</button><button class="day has-work active">7</button><button class="day">8</button><button class="day has-work">9</button><button class="day">10</button>
+                <button class="day has-work">11</button><button class="day">12</button><button class="day has-work">13</button><button class="day has-work">14</button><button class="day">15</button><button class="day">16</button><button class="day">17</button>
+                <button class="day">18</button><button class="day has-work">19</button><button class="day has-work">20</button><button class="day">21</button><button class="day has-work">22</button><button class="day">23</button><button class="day">24</button>
+                <button class="day">25</button><button class="day has-work">26</button><button class="day">27</button><button class="day">28</button><button class="day has-work">29</button><button class="day">30</button><button class="day">31</button>
+              </div>
+            </section>
+            <section class="card">
+              <p class="stat-label">Dia seleccionado</p><h2 style="margin-top:4px;">7 de mayo</h2>
+              <div class="mini-summary" style="margin-top:16px;"><article><p class="stat-label">Viajes</p><p class="stat-value green">8</p></article><article><p class="stat-label">Ganancia</p><p class="stat-value rose">$42.500</p></article><article><p class="stat-label">Gastos</p><p class="stat-value gold">$9.800</p></article><article><p class="stat-label">Neto</p><p class="stat-value">$32.700</p></article></div>
+            </section>
+          </main>
+
+          <main id="history" class="screen">
+            <header class="hero"><p class="eyebrow">Historial</p><h1>Movimientos</h1></header>
+            <section>
+              <div class="section-head"><div><h2>Hoy</h2><p class="section-caption">Viajes y gastos en orden, sin vueltas.</p></div></div>
+              <div class="grid">
+                <article class="row"><div class="movement-icon">$</div><div class="row-main"><p class="row-title">Terminal</p><p class="row-sub">14:20 &middot; Transferencia</p></div><p class="row-price">+$6.400</p></article>
+                <article class="row"><div class="movement-icon">$</div><div class="row-main"><p class="row-title">Barrio Norte</p><p class="row-sub">13:05 &middot; Efectivo</p></div><p class="row-price">+$3.900</p></article>
+                <article class="row"><div class="movement-icon expense">-</div><div class="row-main"><p class="row-title">Combustible</p><p class="row-sub">11:30 &middot; Gasto</p></div><p class="row-price gold">-$9.800</p></article>
+                <article class="row"><div class="movement-icon">$</div><div class="row-main"><p class="row-title">Hospital</p><p class="row-sub">09:10 &middot; Efectivo</p></div><p class="row-price">+$4.800</p></article>
+              </div>
+            </section>
+          </main>
+
+          <main id="stats" class="screen">
+            <header class="hero"><p class="eyebrow">Estadisticas</p><h1>Como viene el mes</h1></header>
+            <section class="soft-panel end-day"><h2>Gran trabajo hoy &hearts;</h2><p>Este mes viene ordenado. La app te muestra lo importante sin marearte con numeros de mas.</p><p style="font-size:34px; font-weight:950; color:white; margin-top:12px;">$284.300</p></section>
+            <section class="grid stats"><article class="card"><p class="stat-label">Semana</p><p class="stat-value green">$96.200</p></article><article class="card"><p class="stat-label">Viajes mes</p><p class="stat-value rose">61</p></article><article class="card"><p class="stat-label">Gastos mes</p><p class="stat-value gold">$74.000</p></article><article class="card"><p class="stat-label">Neto hoy</p><p class="stat-value">$32.700</p></article></section>
+          </main>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast">Viaje guardado ✨</div>
+
+    <script>
+      const screens = document.querySelectorAll(".screen");
+      const nav = document.querySelector("[data-main-nav]");
+      const toast = document.querySelector("#toast");
+      let toastTimer;
+
+      function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 1700);
+      }
+
+      function showScreen(id) {
+        screens.forEach((screen) => screen.classList.toggle("active", screen.id === id));
+        document.querySelectorAll(".nav-btn").forEach((button) => button.classList.toggle("active", button.dataset.screen === id));
+        nav.style.display = id === "trip" || id === "expense" ? "none" : "block";
+        window.scrollTo({ top: 0, behavior: "instant" });
+      }
+
+      document.addEventListener("click", (event) => {
+        const target = event.target.closest("[data-screen]");
+        if (!target) return;
+        if (target.dataset.save) showToast(target.dataset.save);
+        showScreen(target.dataset.screen);
+      });
+    </script>
+  </body>
+</html>
+
+
+
